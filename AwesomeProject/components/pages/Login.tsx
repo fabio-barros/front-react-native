@@ -44,6 +44,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/authApi";
 import { AxiosError } from "axios";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 type RootStackParamList = {
     Login: undefined;
     Home: undefined;
@@ -74,27 +75,17 @@ const LoginScreen: React.FC = () => {
         return true;
     };
 
-    const handleLogin = async () => {
-        try {
-            const input: LoginUserInput = { cpf, password };
-            useLogin(input);
-            // navigation.navigate("Home");
-        } catch (err) {}
-    };
-
-    const {
-        mutation: { mutate, isLoading, isError, error, data },
-    } = useLogin({ cpf, password });
     const mutation = useMutation<any, AxiosError<any, any>, LoginUserInput>(
         login,
         {
             onSuccess: (data) => {
                 console.log("success");
                 console.log("data: " + data.token);
-                localStorage.setItem(
+                AsyncStorage.setItem(
                     "userInfo",
                     JSON.stringify(data.data.token)
                 );
+                navigation.navigate("Home");
             },
             onError: (error) => {
                 console.log("error message on hook: " + error.message);
@@ -114,7 +105,6 @@ const LoginScreen: React.FC = () => {
             },
         }
     );
-    mutation.isLoading ? console.log("loading") : console.log("not loading");
 
     const onSubmit = () => {
         setIsOpen(true);
@@ -124,10 +114,17 @@ const LoginScreen: React.FC = () => {
     };
 
     useEffect(() => {
-        // action on update of movies
+        checkLoggedIn();
     }, [cpfError, passwordError, showModal]);
+
     const [isOpen, setIsOpen] = useState(true);
 
+    const checkLoggedIn = async () => {
+        const user = await AsyncStorage.getItem("userInfo");
+        if (user) {
+            navigation.replace("Home");
+        }
+    };
     const onClose = () => setIsOpen(false);
     return (
         <NativeBaseProvider>
