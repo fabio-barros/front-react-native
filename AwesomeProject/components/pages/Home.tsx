@@ -1,26 +1,28 @@
-import React from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import { Heading } from "native-base";
+import React, { FC } from "react";
+import {
+    View,
+    StyleSheet,
+    ImageBackground,
+    Dimensions,
+    Text,
+} from "react-native";
 import { Button } from "react-native-paper";
 const screenWidth = Dimensions.get("window").width;
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen: FC = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <ImageBackground
-                    source={require("../assets/home_bg.jpg")}
-                    style={styles.image}
-                />
-            </View>
             <View style={styles.buttonContainer}>
                 <View style={styles.row}>
                     <Button
                         mode="contained"
                         style={styles.button}
-                        onPress={() => navigation.navigate("CommonAreaBooking")}
+                        onPress={() => navigation.navigate("CommonAreas")}
                     >
                         Áreas Comuns
                     </Button>
+
                     <Button
                         mode="contained"
                         style={styles.button}
@@ -44,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
                     <Button
                         mode="contained"
                         style={styles.button}
-                        onPress={() => navigation.navigate("Announcements")}
+                        onPress={() => navigation.navigate("NoticeBoard")}
                     >
                         Quadro de Avisos
                     </Button>
@@ -60,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
                         style={styles.button}
                         onPress={() => navigation.navigate("NewScreen")}
                     >
-                        New Screen
+                        ...
                     </Button>
                 </View>
             </View>
@@ -108,6 +110,19 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         backgroundColor: "#6600cc",
         width: (screenWidth - 60) / 3,
+    },
+    overlay: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0,0.3)",
+    },
+    heading: {
+        fontSize: 40,
+        fontWeight: "bold",
+        color: "#fff",
+        textAlign: "center",
+        paddingHorizontal: 20,
     },
 });
 
