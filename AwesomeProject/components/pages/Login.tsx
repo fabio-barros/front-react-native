@@ -22,6 +22,12 @@ import {
     Link,
     HStack,
     Button,
+    Spinner,
+    Collapse,
+    Alert,
+    IconButton,
+    CloseIcon,
+    AlertDialog,
 } from "native-base";
 import { NativeBaseConfigProvider } from "native-base/lib/typescript/core/NativeBaseContext";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -36,6 +42,8 @@ import { TextInputMask } from "react-native-masked-text";
 import ForgotPasswordScreen from "./ForgotPassword";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/authApi";
+import { AxiosError } from "axios";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 type RootStackParamList = {
     Login: undefined;
     Home: undefined;
@@ -51,10 +59,9 @@ const LoginScreen: React.FC = () => {
     const [passwordError, setPasswordError] = React.useState("");
     // const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [show, setShow] = React.useState(true);
 
     const navigation = useNavigation<LoginScreenNavigationProp>();
-
-    const { data } = useLogin({ cpf: cpf, password });
 
     const validate = () => {
         if (cpf === undefined) {
@@ -75,28 +82,42 @@ const LoginScreen: React.FC = () => {
         } catch (err) {}
     };
 
-    const mutation = useMutation<
-        LoginUserOutput,
-        LoginUserError,
-        LoginUserInput
-    >(login, {
-        onSuccess: () => {
-            navigation.navigate("Home");
-        },
-        onError: (error) => {
-            // if (error.erros === 401) {
-            //     alert("Usuário ou senha incorretos");
-            // } else if (error.response.status === 500) {
-            //     alert("Erro interno do servidor");
-            // } else if (error.response.status === 404) {
-            //     alert("Usuário não encontrado");
-            // } else if (error.response.status === 400) {
-            //     alert("Erro de validação");
-            // }
-        },
-    });
+    const {
+        mutation: { mutate, isLoading, isError, error, data },
+    } = useLogin({ cpf, password });
+    const mutation = useMutation<any, AxiosError<any, any>, LoginUserInput>(
+        login,
+        {
+            onSuccess: (data) => {
+                console.log("success");
+                console.log("data: " + data.token);
+                localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(data.data.token)
+                );
+            },
+            onError: (error) => {
+                console.log("error message on hook: " + error.message);
+                console.log("error data: ", error.response?.data.messages);
+                if (error.response.status === 422) {
+                    console.log("Usuário ou senha incorretos");
+                } else if (error.response.status === 500) {
+                    console.log("Erro interno do servidor");
+                } else if (error.response.status === 404) {
+                    console.log("Usuário não encontrado");
+                } else if (error.response.status === 400) {
+                    console.log("Erro de validação");
+                }
+            },
+            onMutate: (input) => {
+                console.log("onMutate: " + input);
+            },
+        }
+    );
+    mutation.isLoading ? console.log("loading") : console.log("not loading");
 
     const onSubmit = () => {
+        setIsOpen(true);
         validate() && cpf && password
             ? mutation.mutate({ cpf, password })
             : null;
@@ -105,7 +126,9 @@ const LoginScreen: React.FC = () => {
     useEffect(() => {
         // action on update of movies
     }, [cpfError, passwordError, showModal]);
+    const [isOpen, setIsOpen] = useState(true);
 
+    const onClose = () => setIsOpen(false);
     return (
         <NativeBaseProvider>
             {showModal && (
@@ -120,6 +143,8 @@ const LoginScreen: React.FC = () => {
 
             <SafeAreaView>
                 <Center w="100%">
+                    <ReactQueryDevtools initialIsOpen={false} />
+
                     <Box safeArea p="2" py="8" w="90%" maxW="290">
                         {/* {data && data.login ? (
                             <Message variant="success">
@@ -244,14 +269,42 @@ const LoginScreen: React.FC = () => {
                                 </Link>
                             </FormControl>
 
-                            <Button
-                                onPress={onSubmit}
-                                mt="2"
-                                colorScheme="indigo"
-                            >
-                                Entrar
-                            </Button>
-
+                            {mutation.isLoading ? (
+                                <HStack space={2} justifyContent="center">
+                                    <Spinner accessibilityLabel="Loading posts" />
+                                    <Heading color="primary.500" fontSize="md">
+                                        Loading
+                                    </Heading>
+                                </HStack>
+                            ) : (
+                                <Button
+                                    onPress={onSubmit}
+                                    mt="2"
+                                    colorScheme="indigo"
+                                >
+                                    Entrar
+                                </Button>
+                            )}
+                            {mutation.isError ? (
+                                <AlertDialog
+                                    isOpen={mutation.isError && isOpen}
+                                    onClose={onClose}
+                                    leastDestructiveRef={undefined}
+                                >
+                                    <AlertDialog.Content>
+                                        <AlertDialog.CloseButton />
+                                        <AlertDialog.Header>
+                                            {mutation.error.response.status}
+                                        </AlertDialog.Header>
+                                        <AlertDialog.Body>
+                                            {
+                                                mutation.error.response?.data
+                                                    .messages
+                                            }
+                                        </AlertDialog.Body>
+                                    </AlertDialog.Content>
+                                </AlertDialog>
+                            ) : null}
                             <HStack mt="6" justifyContent="center">
                                 <Text
                                     fontSize="sm"

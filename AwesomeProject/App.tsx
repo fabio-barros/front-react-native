@@ -37,32 +37,40 @@ export default function App() {
                     >
                         {/* <View style={styles.container}> */}
                         <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="Home" component={Home} />
+                        <Stack.Screen
+                            name="Home"
+                            component={Home}
+                            options={{ title: "Home" }}
+                        />
                         <Stack.Screen
                             name="NoticeBoard"
                             component={NoticeBoardScreen}
+                            options={{ title: "Quadro de Avisos" }}
                         />
                         <Stack.Screen
                             name="TransparencyPortal"
                             component={TransparencyPortalScreen}
+                            options={{ title: "Trânsparencia" }}
                         />
                         <Stack.Screen
                             name="Register"
                             component={RegisterScreen}
+                            options={{ title: "Cadastro" }}
                         />
                         <Stack.Screen
                             name="CommonAreas"
                             component={CommonAreas}
+                            options={{ title: "Áreas Comuns" }}
                         />
                         <Stack.Screen
                             name="ForgotPassword"
                             component={ForgotPasswordScreen}
+                            options={{ title: "Esqueci minha senha" }}
                         />
                         {/* </View> */}
                     </Stack.Navigator>
                 </NativeBaseProvider>
             </NavigationContainer>
-            <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     );
 }
