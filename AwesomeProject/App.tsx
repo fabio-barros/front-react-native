@@ -15,6 +15,8 @@ import ForgotPasswordScreen from "./components/pages/ForgotPassword";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CompleteRegisterScreen from "./components/pages/CompleteRegister";
 import ChooseRole from "./components/pages/ChooseRole";
+import BuildingScreen from "./components/pages/Buildings";
+import ApartmentsScreen from "./components/pages/Apartments";
 
 const Stack = createStackNavigator();
 type RootStackParamList = {
@@ -38,6 +40,21 @@ export default function App() {
                         }}
                     >
                         {/* <View style={styles.container}> */}
+                        <Stack.Screen
+                            name="Buildings"
+                            component={BuildingScreen}
+                            options={{ title: "Prédios" }}
+                        />
+                        <Stack.Screen
+                            name="Apartments"
+                            component={ApartmentsScreen}
+                            options={{ title: "Apartamentos" }}
+                        />
+                        <Stack.Screen
+                            name="CompleteRegister"
+                            component={CompleteRegisterScreen}
+                            options={{ title: "Cadastro" }}
+                        />
                         <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen
                             name="Home"
@@ -57,11 +74,6 @@ export default function App() {
                         <Stack.Screen
                             name="Register"
                             component={RegisterScreen}
-                            options={{ title: "Cadastro" }}
-                        />
-                        <Stack.Screen
-                            name="CompleteRegister"
-                            component={CompleteRegisterScreen}
                             options={{ title: "Cadastro" }}
                         />
                         <Stack.Screen

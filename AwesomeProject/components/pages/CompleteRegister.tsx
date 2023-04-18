@@ -12,6 +12,7 @@ import {
     Button,
     Center,
     FormControl,
+    HStack,
     Heading,
     Input,
     VStack,
@@ -75,17 +76,39 @@ const CompleteRegisterScreen: FC<CompleteRegisterScreenProps> = ({
                 </Heading>
                 <VStack space={3} mt="5">
                     <FormControl>
-                        <FormControl.Label>CPF</FormControl.Label>
-                        <Input />
+                        <FormControl.Label>Nome</FormControl.Label>
+                        <Input value={firstName} onChangeText={setFirstName} />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Password</FormControl.Label>
-                        <Input type="password" />
+                        <FormControl.Label>Sobrenome</FormControl.Label>
+                        <Input value={lastName} onChangeText={setLastName} />
                     </FormControl>
                     <FormControl>
-                        <FormControl.Label>Confirm Password</FormControl.Label>
-                        <Input type="password" />
+                        <FormControl.Label>Email</FormControl.Label>
+                        <Input value={email} onChangeText={setEmail} />
                     </FormControl>
+                    <HStack space={2} mt="2">
+                        <FormControl>
+                            <FormControl.Label>DDD</FormControl.Label>
+                            <Input
+                                value={ddd}
+                                onChangeText={setDdd}
+                                keyboardType="phone-pad"
+                                maxLength={2}
+                                maxWidth={24}
+                            />
+                        </FormControl>
+                        <FormControl>
+                            <FormControl.Label>Telefone</FormControl.Label>
+                            <Input
+                                value={phoneNumber}
+                                onChangeText={setPhoneNumber}
+                                keyboardType="phone-pad"
+                                maxLength={9}
+                                width="74%"
+                            />
+                        </FormControl>
+                    </HStack>
                     <Button mt="2" colorScheme="indigo">
                         Sign up
                     </Button>
