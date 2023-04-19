@@ -14,7 +14,7 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
-    phoneNumber: string;
+    phone: Phone;
     address: string;
     Role: number;
     apartmentId?: string;

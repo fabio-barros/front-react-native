@@ -8,9 +8,11 @@ import {
     VStack,
     HStack,
     Icon,
+    Button,
 } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Building } from "../common/interfaces";
+import { useNavigation } from "@react-navigation/native";
 
 interface ApartmentsScreenProps {
     building: Building;
@@ -18,7 +20,9 @@ interface ApartmentsScreenProps {
 
 const ApartmentsScreen: FC<ApartmentsScreenProps> = ({ building }) => {
     const [apartments, setApartments] = useState([]);
-    const { name, description, street, zipcode } = building;
+    const { name, description, street, zipcode } = building || {};
+    const navigation = useNavigation();
+
     // retrieve apartment data for the selected building
     useEffect(() => {
         const fetchApartments = async () => {
@@ -37,6 +41,10 @@ const ApartmentsScreen: FC<ApartmentsScreenProps> = ({ building }) => {
         fetchApartments();
     }, [name, description, street, zipcode]);
 
+    const handleEditResident = () => {
+        // navigation.navigate("EditResidentScreen", { residentId: resident.id });
+    };
+
     // render each apartment card in the FlatList
     const renderApartmentCard = ({ item }) => (
         <Box bg="white" shadow={3} rounded="lg" p={4} mb={4}>
@@ -52,9 +60,40 @@ const ApartmentsScreen: FC<ApartmentsScreenProps> = ({ building }) => {
             <Text fontSize="md" mb={2}>
                 Floor {item.floor}
             </Text>
-            <Text fontSize="md" mb={2}>
-                {item.isOccupied ? "Occupied" : "Available"}
-            </Text>
+            <HStack alignItems="center">
+                <Icon
+                    as={
+                        <MaterialCommunityIcons
+                            name={item.isOccupied ? "door-closed" : "door-open"}
+                        />
+                    }
+                    size="md"
+                    color={item.isOccupied ? "blue.500" : "green.500"}
+                    mr={2}
+                />
+                <Text
+                    fontSize="md"
+                    color={item.isOccupied ? "blue.500" : "green.500"}
+                >
+                    {item.isOccupied ? "Ocupado" : "Disponível"}
+                </Text>
+            </HStack>
+            <Button
+                onPress={handleEditResident}
+                size="sm"
+                variant="outline"
+                colorScheme="gray"
+                startIcon={
+                    <Icon
+                        as={<MaterialCommunityIcons name="human-edit" />}
+                        size="sm"
+                        mr={1}
+                        color="gray.500"
+                    />
+                }
+            >
+                Editar Residente
+            </Button>
         </Box>
     );
 

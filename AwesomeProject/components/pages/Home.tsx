@@ -1,129 +1,121 @@
-import { Heading } from "native-base";
-import React, { FC } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 import {
-    View,
-    StyleSheet,
-    ImageBackground,
-    Dimensions,
+    Box,
+    Button,
+    HStack,
+    Heading,
+    Icon,
+    IconButton,
+    StatusBar,
     Text,
-} from "react-native";
-import { Button } from "react-native-paper";
-const screenWidth = Dimensions.get("window").width;
+    useColorMode,
+} from "native-base";
+import React, { FC, useEffect, useState } from "react";
+import {} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const HomeScreen: FC = ({ navigation }) => {
+const HomeScreen: FC = () => {
+    const [userInfo, setUserInfo] = useState(null);
+    const { colorMode, toggleColorMode } = useColorMode();
+
+    useEffect(() => {
+        async function getUserInfo() {
+            try {
+                const value = await AsyncStorage.getItem("userInfo");
+                if (value !== null) {
+                    setUserInfo(JSON.parse(value));
+                }
+            } catch (error) {
+                console.error(
+                    "Error getting user info from AsyncStorage:",
+                    error
+                );
+            }
+        }
+
+        getUserInfo();
+    }, []);
+
     return (
-        <View style={styles.container}>
-            <View style={styles.buttonContainer}>
-                <View style={styles.row}>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() => navigation.navigate("CommonAreas")}
-                    >
-                        Áreas Comuns
-                    </Button>
-
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() =>
-                            navigation.navigate("MaintenanceBooking")
+        <Box>
+            <HStack
+                // bg="primary.500"
+                px={1}
+                py={3}
+                justifyContent="space-between"
+                _dark={{
+                    bg: "coolGray.800",
+                }}
+                _light={{
+                    bg: "primary.500",
+                }}
+            >
+                <HStack alignItems="center">
+                    <IconButton
+                        icon={
+                            <Icon
+                                size="lg"
+                                as={
+                                    <MaterialCommunityIcons name="account-circle" />
+                                }
+                                name="menu"
+                                color="white"
+                            />
                         }
-                    >
-                        Manutenção
-                    </Button>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() =>
-                            navigation.navigate("TransparencyPortal")
+                    />
+                    {userInfo ? (
+                        <HStack alignItems="center">
+                            <Text color="white" fontSize="20" fontWeight="bold">
+                                Olá, {userInfo.user.firstName}!
+                            </Text>
+                        </HStack>
+                    ) : (
+                        <Heading>Olá, visitante!</Heading>
+                    )}
+                </HStack>
+                <HStack alignItems="center">
+                    <IconButton
+                        onPress={toggleColorMode}
+                        name="sun"
+                        color="white"
+                        icon={
+                            <Icon
+                                as={
+                                    <MaterialCommunityIcons name="theme-light-dark" />
+                                }
+                                size="md"
+                                color="white"
+                            />
                         }
-                    >
-                        Portal da transparência
-                    </Button>
-                </View>
-                <View style={styles.row}>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() => navigation.navigate("NoticeBoard")}
-                    >
-                        Quadro de Avisos
-                    </Button>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() => navigation.navigate("CondoRules")}
-                    >
-                        Regras do Condomínio
-                    </Button>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        onPress={() => navigation.navigate("NewScreen")}
-                    >
-                        ...
-                    </Button>
-                </View>
-            </View>
-        </View>
+                        _dark={{
+                            name: "moon",
+                            icon: (
+                                <Icon
+                                    as={
+                                        <MaterialCommunityIcons name="weather-night" />
+                                    }
+                                    size="md"
+                                    color="white"
+                                />
+                            ),
+                        }}
+                    />
+                    <IconButton
+                        name="logout"
+                        color="white"
+                        icon={
+                            <Icon
+                                as={<MaterialCommunityIcons name="logout" />}
+                                size="sm"
+                                color="white"
+                            />
+                        }
+                    />
+                </HStack>
+            </HStack>
+        </Box>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "white",
-    },
-    imageContainer: {
-        height: "40%",
-    },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-    },
-    buttonContainer: {
-        height: "60%",
-        backgroundColor: "#fff",
-        border: "1px solid green",
-        padding: 20,
-        justifyContent: "space-around",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: "center",
-        marginTop: 60,
-    },
-    row: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 20,
-        height: 0,
-        backgroundColor: "#000",
-    },
-    button: {
-        borderRadius: 10,
-        // paddingVertical: 50,
-        // paddingHorizontal: 1,
-        wift: 100,
-        height: 100,
-        marginHorizontal: 5,
-        marginVertical: 10,
-        backgroundColor: "#6600cc",
-        width: (screenWidth - 60) / 3,
-    },
-    overlay: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "rgba(0,0,0,0.3)",
-    },
-    heading: {
-        fontSize: 40,
-        fontWeight: "bold",
-        color: "#fff",
-        textAlign: "center",
-        paddingHorizontal: 20,
-    },
-});
 
 export default HomeScreen;

@@ -41,7 +41,7 @@ export const login = async ({ cpf, password }: LoginUserInput) => {
         console.log(data.data.user.email);
         console.log(data.data.user.cpf);
         console.log(data.data.user.id);
-        console.log(data.data.user.phoneNumber);
+        console.log(data.data.user.phone.phoneNumber);
         return data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -79,7 +79,7 @@ export const register = async ({
         console.log(data.data.user.email);
         console.log(data.data.user.cpf);
         console.log(data.data.user.id);
-        console.log(data.data.user.phoneNumber);
+        console.log(data.data.user.phone.phoneNumber);
         return data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

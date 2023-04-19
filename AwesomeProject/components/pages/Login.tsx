@@ -1,20 +1,10 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    SafeAreaView,
-    Dimensions,
-} from "react-native";
-import {
-    Container,
     Input,
     Text,
-    Stack,
     FormControl,
     VStack,
-    useNativeBase,
     NativeBaseProvider,
     Heading,
     Center,
@@ -23,22 +13,11 @@ import {
     HStack,
     Button,
     Spinner,
-    Collapse,
-    Alert,
-    IconButton,
-    CloseIcon,
     AlertDialog,
 } from "native-base";
-import { NativeBaseConfigProvider } from "native-base/lib/typescript/core/NativeBaseContext";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import {
-    LoginUserError,
-    LoginUserInput,
-    LoginUserOutput,
-    useLogin,
-} from "../common/hooks/login";
-import { TextInputMask } from "react-native-masked-text";
+import { LoginUserInput } from "../common/hooks/login";
 import ForgotPasswordScreen from "./ForgotPassword";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../api/authApi";
@@ -81,10 +60,7 @@ const LoginScreen: React.FC = () => {
             onSuccess: (data) => {
                 console.log("success");
                 console.log("data: " + data.token);
-                AsyncStorage.setItem(
-                    "userInfo",
-                    JSON.stringify(data.data.token)
-                );
+                AsyncStorage.setItem("userInfo", JSON.stringify(data.data));
                 navigation.navigate("Home");
             },
             onError: (error) => {
@@ -122,7 +98,7 @@ const LoginScreen: React.FC = () => {
     const checkLoggedIn = async () => {
         const user = await AsyncStorage.getItem("userInfo");
         if (user) {
-            navigation.replace("Home");
+            navigation.navigate("Home");
         }
     };
     const onClose = () => setIsOpen(false);

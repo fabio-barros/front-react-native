@@ -14,7 +14,6 @@ const CommonAreaBookingScreen = () => {
     const [commonAreaAvailability, setCommonAreaAvailability] = useState([]);
 
     const fetchCommonAreaAvailability = () => {
-        // Fetch availability data for the selected date and common area
         const availabilityData = [
             {
                 id: 1,

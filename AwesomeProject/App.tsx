@@ -45,6 +45,7 @@ export default function App() {
                             component={BuildingScreen}
                             options={{ title: "Prédios" }}
                         />
+                        <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen
                             name="Apartments"
                             component={ApartmentsScreen}
@@ -55,11 +56,10 @@ export default function App() {
                             component={CompleteRegisterScreen}
                             options={{ title: "Cadastro" }}
                         />
-                        <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen
                             name="Home"
                             component={Home}
-                            options={{ title: "Home" }}
+                            options={{ title: "Home", headerShown: false }}
                         />
                         <Stack.Screen
                             name="NoticeBoard"
