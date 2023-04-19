@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Julio",
+      "lastName": "Martins",
+      "cpf": "005.018.066-52",
+      "email": "email4@yahoo.com",
+      "password": "12345678",
+      "role": 0,
+      "phone": {
+        "phoneNumber": "99603-7510",
+        "ddd": "54"
+      }
+    },
+    {
+      "firstName": "Fábio",
+      "lastName": "Barros",
+      "cpf": "12345678912",
+      "email": "email@example.com",
+      "password": "12345678",
+      "role": "a",
+      "phoneNumber": "999485566",
+      "ddd": "81",
+      "id": 2
+    }
+  ],
+  "gymAvailability": [
+    {
+      "id": "1",
+      "dateTime": "2023-04-12T10:00:00",
+      "availableCount": 10,
+      "gymId": "1"
+    },
+    {
+      "id": "2",
+      "dateTime": "2023-04-12T12:00:00",
+      "availableCount": 7,
+      "gymId": "1"
+    },
+    {
+      "id": "3",
+      "dateTime": "2023-04-12T14:00:00",
+      "availableCount": 5,
+      "gymId": "1"
+    },
+    {
+      "id": "4",
+      "dateTime": "2023-04-12T16:00:00",
+      "availableCount": 3,
+      "gymId": "1"
+    },
+    {
+      "id": "5",
+      "dateTime": "2023-04-12T18:00:00",
+      "availableCount": 1,
+      "gymId": "1"
+    }
+  ]
+}
