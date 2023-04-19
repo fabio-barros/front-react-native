@@ -37,7 +37,7 @@ Durante o desenvolvimento do projeto, serão utilizadas práticas ágeis de dese
 
 O projeto será desenvolvido sob a orientação do professor e com a participação do cliente, para garantir a aderência às necessidades do negócio.
 
-Mais detalhes sobre o a arquitetura, tecnologias utilizadas, dependências, requisitos e execução da aplicação em [Frontend]() e [Backend]().
+Mais detalhes sobre o a arquitetura, tecnologias utilizadas, dependências, requisitos e execução da aplicação em [Frontend]() e [Backend](https://github.com/fabio-barros/backend-eng2022).
 
 
 ## Descrição dos Componentes
